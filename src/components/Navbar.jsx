@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div className="container-fluid">
             <Link className="navbar-brand" to="/">ExerTrack</Link>
             <button
@@ -17,23 +17,23 @@ const Navbar = () => (
             <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
-                    Exercises
-                </Link>
-                </li>
-                <li className="nav-item">
-                <Link className="nav-link" to="/create">
-                    Create Exercise Log
-                </Link>
-                </li>
-                <li className="nav-item">
-                <Link className="nav-link" to="/user">
-                    Create User
-                </Link>
-                </li>
-            </ul>
+                <ul className="navbar-nav navbar-nav-scroll">
+                    <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to="/">
+                            Exercises
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/create">
+                            Create Exercise Log
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/user">
+                            Create User
+                        </Link>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
