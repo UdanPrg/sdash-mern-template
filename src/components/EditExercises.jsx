@@ -13,11 +13,6 @@ function EditExercises () {
         date: new Date()
     })
 
-    const [username, setUsername] = useState("");;
-    const [description, setDescription] = useState("");
-    const [duration, setDuration] = useState(0);
-    const [date, setDate] = useState(new Date());
-
     const [users, setUsers] = useState([])
 
     // console.log('Respuesta: ' + this.props.location);
@@ -52,32 +47,41 @@ function EditExercises () {
     
     },[])
 
+    useEffect(()=>{
+        console.table(exercise)
+    }, [exercise])
 
     function onChangeUsername(e){
-        setUsername(e.target.value)
+        setExercise({
+            ...exercise,
+            username: e.target.value
+        })
     }
     function onChangeDescription(e){
-        setDescription(e.target.value)
+        setExercise({
+            ...exercise,
+            description: e.target.value
+        })
     }
     function onChangeDuration(e){
-        setDuration(e.target.value)
+        setExercise({
+            ...exercise,
+            duration: Number(e.target.value)
+        })
     }
     function onChangeDate(date){
-        setDate(date)
+        setExercise({
+            ...exercise,
+            date
+        })
     }
 
     function onSubmit(e){
         e.preventDefault();
 
-        setExercise({
-            username: username,
-            description: description,
-            duration: duration,
-            date: date
-        })
         console.log(exercise);
 
-        axios.post('http://localhost:5000/exercises/update/641533fdbd87836209041827', exercise)
+        axios.post(`http://localhost:5000/exercises/update/${exercise_id}`, exercise)
             .then(res => console.log(res.data));
         
         window.location = '/';
@@ -92,7 +96,7 @@ function EditExercises () {
                         <select
                             required
                             className='form-control'
-                            value={username}
+                            value={exercise.username}
                             onChange={onChangeUsername}>
                                 {
                                     users.map(function(user){
@@ -110,7 +114,7 @@ function EditExercises () {
                         <input type="text"
                             required
                             className="form-control"
-                            value={description}
+                            value={exercise.description}
                             onChange={onChangeDescription} />
                     </div>
                     <div className="form-group">
@@ -118,14 +122,14 @@ function EditExercises () {
                         <input type="text"
                             required
                             className="form-control"
-                            value={duration}
+                            value={exercise.duration}
                             onChange={onChangeDuration} />
                     </div>
                     <div className="form-group">
                         <label>Date: </label>
                         <div>
                             <DatePicker
-                                selected={date}
+                                selected={exercise.date}
                                 onChange={onChangeDate}
                             />
                         </div>
