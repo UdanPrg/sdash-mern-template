@@ -79,7 +79,7 @@ function EditExercises () {
     function onSubmit(e){
         e.preventDefault();
 
-        console.log(exercise);
+        // console.log(exercise);
 
         axios.post(`http://localhost:5000/exercises/update/${exercise_id}`, exercise)
             .then(res => console.log(res.data));

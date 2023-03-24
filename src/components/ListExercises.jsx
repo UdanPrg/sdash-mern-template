@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const Component = React.Component;
@@ -24,7 +24,7 @@ const Exercise = (props) => {
                 >
                     edit
                 </Link>
-                |{" "}
+                <span> | </span>
                 <button
                     onClick={() => {
                         props.deleteExercise(props.exercise._id);
@@ -37,63 +37,56 @@ const Exercise = (props) => {
     );
 };
 
-class ListExercises extends Component{
-    constructor(props){
-        super(props);
 
-        this.deleteExercise = this.deleteExercise.bind(this);
+function ListExercises() {    
 
-        this.state = {exercises: []}
-    }
-    
-    componentDidMount() {
+    const [exercises, setExercises] = useState([]);
+
+    useEffect(()=>{
         axios.get(urlBase + 'exercises')
-            .then(response => {
-                this.setState({ exercises: response.data })
-            })
-            .catch((error)=> {
-                console.log(error);
-            })
-    }
-    deleteExercise(id){
+        .then(response => {
+            setExercises(response.data)
+        })
+        .catch((error)=> {
+            console.log(error);
+        })
+    },[])
+
+    function deleteExercise(id){
         axios.delete(urlBase + 'exercises/' + id)
             .then(res => console.log(res.data));
 
-        this.setState({
-            exercises: this.state.exercises.filter(el => el._id !== id)
-        })
+        setExercises( exercises.filter(el => el._id !== id) )
     }
 
-    exerciseList(){
-        return this.state.exercises.map(currentExercise => {
-                return <Exercise exercise={currentExercise} deleteExercise={this.deleteExercise} key={currentExercise._id} />
+    function exerciseList(){
+        // console.log(typeof(exercises));
+        return exercises.map(currentExercise => {
+                return <Exercise exercise={currentExercise} deleteExercise={deleteExercise} key={currentExercise._id} />
         })
     }
-
-    render(){
-        return (
-            <div className="list-exercises-content container-fluid p-5">
-                <div className="col-12 col-md-4">
-                    <h3>Logged Exercises</h3>
-                    <table className="table">
-                        <thead className="thead-light">
-                            <tr>
-                                <th>Username</th>
-                                <th>Description</th>
-                                <th>Duration</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            { this.exerciseList() }
-                        </tbody>
-                    </table>
-                </div>
+    return (
+        <div className="list-exercises-content container-fluid p-5">
+            <div className="col-12">
+                <h3>Logged Exercises</h3>
+                <table className="table table-striped">
+                    <thead className="thead-light">
+                        <tr>
+                            <th>Username</th>
+                            <th>Description</th>
+                            <th>Duration</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {exerciseList() }
+                    </tbody>
+                </table>
             </div>
-        )
+        </div>
+    )
 
-    }
 };
 
 export default ListExercises;
